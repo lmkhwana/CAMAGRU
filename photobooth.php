@@ -47,17 +47,6 @@
 ?>
 <!DOCTYPE html>
 <html>
-    
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="vewport" content="width=device-width" >
-        <meta name="author" content="Luthando Mkhwanazi">
-        <meta name="description" content="A photobooth website.">
-        <title>Camaguru | Welcome</title>
-        <link rel="stylesheet" href="../styles/style.css">
-    </head>
-    <body>
         <?php include 'views/header.php';?>
 
          <section id="heading">
@@ -68,12 +57,14 @@
         
         <section id="photobooth">
             <div class="container">
+                <hr>
+               
                 <article id="main-col" style="float: left; width: 55%; margin-top: 10px;">
                     <h1 class="title"> Snap a shot! </h1>
                     <video id="vidDisplay" width="100%" autoplay="true">
                         No Video support for your browser
                     </video>
-                    <button href="#" class="registerbtn">Capture!</button>
+                    <button href="#" class="registerbtn" id="registerbtn">Capture!</button>
 
                     <h3 style="text-align: center;"> Or Upload </h3>
                     <hr>
@@ -86,17 +77,40 @@
 
                 </article>
                 <aside id="sidebar" style=" height:auto; float: right; width: 40%; margin-top: 10px;">
-                    <h3>Your images</h3>
-                    <div class="preview">
-
-                        <canvas id="boxi">
+                    <h3>Preview</h3>
+                     <canvas id="boxi" width="300px" height="300px">
                             
                         </canvas>
+                        <input type="submit" name="save" class="registerbtn" onclick="save()" style="margin-top: 10px;">
                         
                         
-                    </div>
+  
                 </aside>
             </div>
+            <section id="gallery">
+            <div class="container">
+                <h2 style="text-align: center;">Your images</h2>
+                <?php 
+                
+                    $query = "SELECT * FROM gallery WHERE user = :user";
+                    $stmt = $db->prepare($query);
+                    $stmt->execute(array(':user' => $_SESSION['username']));
+                    $row = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                    foreach($row as $r)
+                    {
+                        //print_r($row);
+                         echo' <div class="box">
+                                <img src="'.$r['path'].'"/>
+                                </div>';
+                            echo '<input type="submit">';
+                    }
+                    
+                
+                ?>
+            </div>
+            </section>
+            <p id="demo"></p>
         </section>
         <script src="scripts/webcam_script.js"></script>
         </body>

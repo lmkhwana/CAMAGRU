@@ -9,6 +9,9 @@
            header('Location: confirm.php?token='.$_GET['token']);
         }
 
+        if (isset($_GET['msg']) && $_GET['msg'] == "confirmed")
+            $msg = "<p style='color: green;'>Congrats! You can now login.</p>";
+
         if (isset($_POST['submit']))
         {
             if (!empty($_POST['username']) && !empty($_POST['psw']))
@@ -29,7 +32,7 @@
                         header('Location: photobooth.php?username='.$_SESSION['username']);
                     }
                     else
-                        $msg = "<p style='color: red;'>Please go and verify your email address.</p>";
+                        $msg = "<p style='color: green;'>Please go and verify your email address.</p>";
                 }
                 
                 

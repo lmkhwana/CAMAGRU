@@ -12,7 +12,7 @@
     <section id="gallery">
     <div class="container">
     <?php 
-        
+
         $stmt = $db->prepare('SELECT * FROM gallery
                                ORDER BY date_created DESC');
         $stmt->execute();

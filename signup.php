@@ -84,7 +84,11 @@
         <label for="psw-repeat"><b>Repeat Password</b></label>
         <input type="password" placeholder="Repeat Password" name="psw-repeat" required>
         <hr>
-
+        <label for="preference"><b>Notification preference</b></label> <br \>
+        <p>Would you like to recieve Notifications when users comment on your pictures?</p>
+        <input type="radio"  name="preference" value="Yes" required checked>Yes <br>
+        <input type="radio"  name="preference" value="No" required>No<br>
+        <hr>
         <button type="submit" name="submit" class="registerbtn">Register</button>
           </div>
 

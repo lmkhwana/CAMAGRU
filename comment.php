@@ -2,6 +2,11 @@
     include "config/database.php";
     session_start();
 
+    $sql = "SELECT * FROM gallery WHERE id = :id";
+    $st = $db->prepare($sql);
+    $st->execute(array('id' => $_GET['id']));
+    $row = $st->fetch();
+
     if (isset($_SESSION['id']) && isset($_SESSION['username']))
     {
         if(isset($_POST['submit']))
@@ -43,7 +48,7 @@
             <div class="container">
                 <article id="main-col" style="float: left; width: 55%; margin-top: 10px;">
                     <h1 class="title"> Image </h1>
-                    <img src="1.png" width="70%" />
+                     <img src="<?php echo $row['path']?>" width="70%" />
 
                 </article>
                 <aside id="sidebar" style=" height:auto; float: right; width: 40%; margin-top: 10px;">

@@ -26,8 +26,8 @@
 
                     //Update query
 
-                    $query = "UPDATE `users` 
-                                SET `f_name` = $firstname,
+                    $query = "UPDATE    `users`   
+                             SET        `f_name` = $firstname,
                                         `l_name` = $lastname,
                                         `username` = $username,
                                         `email` = : $email,
@@ -36,13 +36,14 @@
                    
                     $stmt = $db->prepare($query);
                     $stmt->execute();
-                 
+                    
+                   // header('Location: profile.php?updated=updated');
 
                    
                 }
             }
         }
-       // header('Location: profile.php?updated');
+        
 
 ?>
 
