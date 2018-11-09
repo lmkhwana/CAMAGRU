@@ -42,31 +42,51 @@
   const canvas = document.getElementById('boxi');
   const context = canvas.getContext('2d');
   const captureButton = document.getElementById('registerbtn');
-  var image = new Image();
 
   const constraints = {
     video: true,
   };
+
+   // Attach the video stream to the video element and autoplay.
+   navigator.mediaDevices.getUserMedia(constraints)
+   .then((stream) => {
+     player.srcObject = stream;
+   });
 
   captureButton.addEventListener('click', () => {
     // Draw the video frame to the canvas.
     context.drawImage(player, 0, 0, canvas.width, canvas.height);
   });
 
-  // Attach the video stream to the video element and autoplay.
-  navigator.mediaDevices.getUserMedia(constraints)
-    .then((stream) => {
-      player.srcObject = stream;
-    });
+    //function to check for a blank canvas
+
+    function isCanvasBlank(canvas) {
+        var blank = document.createElement('canvas');
+        blank.width = canvas.width;
+        blank.height = canvas.height;
+    
+        return canvas.toDataURL() == blank.toDataURL();
+    }
+
+    function like()
+    {
+      document.getElementById("like").innerHTML = "Liked";
+      document.getElementById("like").disabled = true;
+    }
 
     function save()
     {
-        //Convert to an image
-        image.src = canvas.toDataURL("image/png");
-
-        var hr = new XMLHttpRequest();
-
-        var url = "photobooth.php";
-        var img = image.files[0];
-        alert(img);
+       var dataURL = canvas.toDataURL(); // convert to base64
+       document.getElementById("data").value = dataURL;
     }
+    //    const xhr = new XMLHttpRequest();
+
+    //    xhr.onload = function()
+    //    {
+    //       const res = document.getElementById('server');
+    //       res.innerHTML = this.responseText;
+    //    };
+    //    xhr.open("POST", "../photobooth.php");
+    //    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    //    xhr.send("data="+dataURL);
+    // }

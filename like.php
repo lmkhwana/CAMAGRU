@@ -4,6 +4,7 @@
     if (isset($_GET['id']))
     {
         $id = $_GET['id'];
+        echo $id;
         try{
             $sql = "SELECT * FROM gallery WHERE id = :id";
             $st = $db->prepare($sql);

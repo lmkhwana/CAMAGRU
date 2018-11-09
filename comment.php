@@ -16,6 +16,22 @@
             $query = "INSERT INTO comments (post_id, comment, user) VALUES(:id, :comment, :user)";
             $stmt = $db->prepare($query);
             $stmt->execute(array(':id' => $_GET['id'], ':comment' => $comment, ':user' => $_SESSION['username']));
+
+
+            $sq = "SELECT * FROM users WHERE username = :user";
+            $s = $db->prepare($sq);
+            $s->execute(array(':user' => $row['user']));
+            $r = $s->fetch();
+
+            $Name = "Camagru comment"; //senders name
+            $my_email = "no-reply@camagru.com"; //senders email
+            $recipient = $r['email'];
+            $subject = "New comment";
+            $headers .= "From: ". $Name . " <" . $my_email . ">\r\n";
+            $body = "Hello , You have a new comment from ". $_SESSION['username']." : ". $comment. " view it here http://http://127.0.0.1:8080/camagru/comment.php?id=".$_GET['id'];
+                            
+
+            $result = mail($recipient, $subject, $body, $header);
         }
     }
     else

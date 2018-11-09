@@ -13,20 +13,52 @@
     <div class="container">
     <?php 
 
-        $stmt = $db->prepare('SELECT * FROM gallery
-                               ORDER BY date_created DESC');
-        $stmt->execute();
 
-        $row = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $per_page = 5;
+
+        $sql = "SELECT * FROM gallery";
+        $stmt = $db->prepare($sql);
+        $stmt->execute();
+        $count = $stmt->rowCount();
+
+        //total number of pages available
+        $number_pages = ceil($count/$per_page);
+
+        //determite which page number the visitor is on
+        if (!isset($_GET['page']))
+        {
+            $page = 1;
+        }
+        else
+        {
+            $page = $_GET['page'];
+        }
+
+        //results on each page (1 - 5) (6 - 10)
+        $starting_number = ($page - 1) * $per_page;
+
+        //query
+        $sql = "SELECT * FROM gallery ORDER BY date_created DESC LIMIT " . $starting_number. ',' . $per_page;
+        $stmt = $db->prepare($sql);
+        $stmt->execute();
+        $row = $stmt->fetchAll();
         foreach($row as $r)
         {
                     echo' <div class="box">
                                     <h4>Uploaded by: <a href="#">'.$r['user'].' </a></h4>
                                     <img src="'.$r['path'].'">
-                                    <button><a href="like.php?id='.$r['id'].'">'.$r['likes'].' Like</a></button></form>
+                                    <button onclick="like()" id="like"><a href="like.php?id='.$r['id'].'">'.$r['likes'].' Like</a></button></form>
                                     <button><a href="comment.php?id='.$r['id'].'">Comment</a></button>
                                 </div>';
         }
+
+        //display links for each page
+        for ($page=1; $page <= $number_pages; $page++)
+        {
+            echo '<a href="index.php?page='. $page .'"> ' . $page . ' </a>';
+        }
+
         ?>
         <?php
 

@@ -4,8 +4,20 @@
 
     if (isset($_SESSION['id']) && isset($_SESSION['username']))
     {
+        
         $target_dir = "files/";
         $target_file = $target_dir . basename($_FILES["image"]["name"]);
+
+        // if (isset($_POST['save']))
+        // {
+        //     $img = $_POST['data'];
+        //     $img = str_replace('data:image/png;base64,', '', $img);
+        //     // $data = base64_decode($img);  
+        //     // $file = $target_dir . uniqid() . '.png';
+        //     // $success = file_put_contents($file, $data);
+        //     // print $success ? $file : 'Unable to save the file.';  
+        //     echo $img;
+        // }
 
         if (isset($_POST['submit']))
         {
@@ -64,7 +76,7 @@
                     <video id="vidDisplay" width="100%" autoplay="true">
                         No Video support for your browser
                     </video>
-                    <button href="#" class="registerbtn" id="registerbtn">Capture!</button>
+                    <button href="#" onclick="save()" class="registerbtn" id="registerbtn">Capture!</button>
 
                     <h3 style="text-align: center;"> Or Upload </h3>
                     <hr>
@@ -76,12 +88,16 @@
                     </form>
 
                 </article>
-                <aside id="sidebar" style=" height:auto; float: right; width: 40%; margin-top: 10px;">
-                    <h3>Preview</h3>
-                     <canvas id="boxi" width="300px" height="300px">
-                            
-                        </canvas>
-                        <input type="submit" name="save" class="registerbtn" onclick="save()" style="margin-top: 10px;">
+                    <aside id="sidebar" style=" height:auto; float: right; width: 40%; margin-top: 10px;">
+                        <h3>Preview</h3>
+                        
+                        <canvas id="boxi" width="300px" height="300px"></canvas>
+                        <form method="post">
+                        
+
+                        <input type="text" name="data" id="data" value="" style="display:none;"/>
+                        <input type="submit" name="save" class="registerbtn"  style="margin-top: 10px;">
+                        </form>
                         
                         
   
@@ -102,15 +118,15 @@
                         //print_r($row);
                          echo' <div class="box">
                                 <img src="'.$r['path'].'"/>
+                                <a href="delete.php?id='.$r['id'].'">Delete</a>
                                 </div>';
-                            echo '<input type="submit">';
+   
                     }
                     
                 
                 ?>
             </div>
             </section>
-            <p id="demo"></p>
         </section>
         <script src="scripts/webcam_script.js"></script>
         </body>

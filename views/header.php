@@ -9,6 +9,7 @@
         <meta name="description" content="A photobooth website.">
         <title>Camaguru</title>
         <link rel="stylesheet" href="styles/style.css">
+        <script src="scripts/webcam_script.js"></script>
     </head>
     <body>
         <header>

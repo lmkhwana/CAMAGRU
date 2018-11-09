@@ -17,8 +17,6 @@
                  if ($_POST['psw'] === $_POST['psw-repeat'])
                 {
                     //set variables
-                     $firstname = $_POST['f_name'];
-                     $lastname = $_POST['l_name'];
                      $username = $_POST['username'];
                      $email = $_POST['email'];
                      $password = hash("whirlpool", $_POST['psw']);
@@ -27,9 +25,7 @@
                     //Update query
 
                     $query = "UPDATE    `users`   
-                             SET        `f_name` = $firstname,
-                                        `l_name` = $lastname,
-                                        `username` = $username,
+                             SET        `username` = $username,
                                         `email` = : $email,
                                         `password` = $password, 
                             WHERE       `id` = : $id";
@@ -56,8 +52,6 @@
 
                 if ($row = $stmt->fetchAll(PDO::FETCH_ASSOC))
                 {
-                    $firstname = $row[0]['f_name'];
-                    $lastname = $row[0]['l_name'];
                     $username = $row[0]['username'];
                     $email = $row[0]['email'];
                 }
@@ -68,11 +62,6 @@
         <p>You can update your information.</p>
         <hr>
         <?php if(isset($msg)) echo $msg."<br>"; ?>
-        <label for="Username"><b>First name</b></label>
-        <input type="text" placeholder="Current First name : <?php echo $firstname; ?>" name="f_name" required>
-
-        <label for="Username"><b>Last name</b></label>
-        <input type="text" placeholder="Current First name : <?php echo $lastname; ?>" name="l_name" required>
 
         <label for="Username"><b>Username</b></label>
         <input type="text" placeholder="Current Username : <?php echo $username; ?>" name="username" required>
