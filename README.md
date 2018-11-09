@@ -4,4 +4,4 @@ Camagru is an Instagram-like website. It allows you to take pictures with your w
 
 It is the first Web Project at WeThinkCode_.
 
-![Preview](wip.png)
+![Preview](WIP.png)
