@@ -1,4 +1,4 @@
-<?php include 'config/database.php'?>
+<?php include 'config/connect.php';?>
 <?php include 'views/header.php';?>
 <?php
 
@@ -17,6 +17,11 @@
                             $email = $_POST['email'];
                             $passwordunsecure = $_POST['psw'];
                             $password = hash("whirlpool", $_POST['psw']);
+                            $selected = $_POST['preference'];
+                            if ($selected == "yes")
+                                $option = 1;
+                            else
+                                $option = 0;
 
                             //create a token
                             $token = "qwertyuiopasdfghjklljanASDFGHJKLMNBVCXZ1236547789!()*";
@@ -24,13 +29,13 @@
                             $token = substr($token, 0, 9);
 
                             //Insert query
-                            $query = "INSERT INTO users (f_name, l_name, username, email, password, token, passwordunsecure) VALUES (:f_name, :l_name, :username, :email, :password, :token, :passwordunsecure)";
+                            $query = "INSERT INTO users (username, email, password, token,  preference) VALUES  (:username, :email, :password, :token, :preference)";
 
                             //Prepare our statement
                             $stmt = $db->prepare($query);
 
                             //Execute
-                            $stmt->execute(array('f_name' => '', 'l_name' => '', ':username' => $username, ':email' => $email, ':password' => $password, ':token' => $token, ':passwordunsecure' => $passwordunsecure));
+                            $stmt->execute(array(':username' => $username, ':email' => $email, ':password' => $password, ':token' => $token,  ':preference' => $option));
 
                             //Mail variables
                             $Name = "Camagru verify"; //senders name

@@ -1,5 +1,5 @@
 <?php
-    include "config/database.php";
+    include 'config/connect.php';
     session_start();
 
     $sql = "SELECT * FROM gallery WHERE id = :id";
@@ -23,15 +23,24 @@
             $s->execute(array(':user' => $row['user']));
             $r = $s->fetch();
 
-            $Name = "Camagru comment"; //senders name
-            $my_email = "no-reply@camagru.com"; //senders email
-            $recipient = $r['email'];
-            $subject = "New comment";
-            $headers .= "From: ". $Name . " <" . $my_email . ">\r\n";
-            $body = "Hello , You have a new comment from ". $_SESSION['username']." : ". $comment. " view it here http://http://127.0.0.1:8080/camagru/comment.php?id=".$_GET['id'];
+            $query = "SELECT * FROM users WHERE username = :username";
+            $statement = $db->prepare($query);
+            $statement->execute(array('username' => $row['user']));
+            $r = $statement->fetch();
+
+            if ($r['preference'] == 1)
+            {
+                $Name = "Camagru comment"; //senders name
+                $my_email = "no-reply@camagru.com"; //senders email
+                $recipient = $r['email'];
+                $subject = "New comment";
+                $headers .= "From: ". $Name . " <" . $my_email . ">\r\n";
+                $body = "Hello , You have a new comment from ". $_SESSION['username']." : ". $comment. " view it here http://http://127.0.0.1:8080/camagru/comment.php?id=".$_GET['id'];
                             
 
-            $result = mail($recipient, $subject, $body, $header);
+                $result = mail($recipient, $subject, $body, $header);
+            }
+            
         }
     }
     else

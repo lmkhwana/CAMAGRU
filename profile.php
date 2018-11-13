@@ -1,5 +1,5 @@
 <?php session_start(); ?>
-<?php include 'config/database.php'?>
+<?php include 'config/connect.php';?>
 <?php include 'views/header.php';?>
 
 <section id="heading">
@@ -24,16 +24,11 @@
 
                     //Update query
 
-                    $query = "UPDATE    `users`   
-                             SET        `username` = $username,
-                                        `email` = : $email,
-                                        `password` = $password, 
-                            WHERE       `id` = : $id";
-                   
+                    $query = "UPDATE `users` SET `username`=?,`email`=?,`password`=? WHERE `id`=?";
                     $stmt = $db->prepare($query);
-                    $stmt->execute();
+                    $stmt->execute([$username, $email, $password, $id]);
                     
-                   // header('Location: profile.php?updated=updated');
+                   header('Location: profile.php?updated=updated');
 
                    
                 }
@@ -63,18 +58,20 @@
         <hr>
         <?php if(isset($msg)) echo $msg."<br>"; ?>
 
-        <label for="Username"><b>Username</b></label>
-        <input type="text" placeholder="Current Username : <?php echo $username; ?>" name="username" required>
+        <label for="Username"><b>Username</b>: <?php echo $username; ?></label>
+        <input type="text" placeholder="Update Username" name="username" required>
             
-        <label for="email"><b>Email</b></label>
-        <input style = "width: 100%; padding: 15px; margin: 5px 0 22px 0; display: inline-block; border: none; background: #f1f1f1;" type="email" class="email" placeholder="Current email : <?php echo $email; ?>" name="email" required>
+        <label for="email"><b>Email</b>: <?php echo $email; ?></label>
+        <input style = "width: 100%; padding: 15px; margin: 5px 0 22px 0; display: inline-block; border: none; background: #f1f1f1;" type="email" class="email" placeholder="Update email" name="email" required>
 
-        <label for="psw"><b>Password</b></label>
-        <input type="password" placeholder="Change Password" name="psw" required>
-
-        <label for="psw-repeat"><b>Repeat Password</b></label>
-        <input type="password" placeholder="Repeat Password" name="psw-repeat" required>
+        <label for="preference"><b>Update notification preference</b></label> <br \>
+        <p>Would you like to recieve Notifications when users comment on your pictures?</p>
+        <input type="radio"  name="preference" value="Yes" required checked>Yes <br>
+        <input type="radio"  name="preference" value="No" required>No<br>
         <hr>
+        <div class="container signin">
+            <p>Or <a href="forgot.php">Change password</a>.</p>
+        </div>
 
         <button type="submit" name="submit" class="registerbtn">Update</button>
           </div>

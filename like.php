@@ -1,6 +1,8 @@
 <?php
-    include 'config/database.php';
+    include 'config/connect.php';
     session_start();
+    if (isset($_SESSION['liked']))
+        header('index.php?liked=alreadyliked');
     if (isset($_GET['id']))
     {
         $id = $_GET['id'];

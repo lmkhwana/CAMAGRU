@@ -1,4 +1,4 @@
-<?php include 'config/database.php'?>
+<?php include 'config/connect.php';?>
 <?php include 'views/header.php'?>
 
 <?php
@@ -22,7 +22,7 @@
                         $my_email = "no-reply@camagru.com"; //senders email
                         $recipient = $_POST['email'];
                         $subject = "Recover password";
-                        $body = "Hello ".$row[0]['username'].", your password is: ".$row[0]['passwordunsecure'];
+                        $body = "Hello ".$row[0]['username'].", please click here to reset your password: http://127.0.0.1:8080/camagru/resetpassword.php?token=".$row[0]['token'];
                         $header = "From: ". $Name . " <" . $my_email . ">\r\n";
 
                          $result = mail($recipient, $subject, $body, $header);
@@ -40,13 +40,13 @@
 ?>
 <section id="heading">
     <div class="container">
-            <h1>Recover password</h1>
+            <h1>Update password</h1>
     </div>
 </section>
         
 <form action="" method="post">
     <div class="container">
-        <p>Please fill in this form login.</p>
+        <p>Please fill in this form update password.</p>
         <?php if (isset($msg)) echo($msg); ?>
         <hr>
                 

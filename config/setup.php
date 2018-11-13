@@ -1,12 +1,12 @@
 <?php
-    include 'database.php';
-
+    //include 'connect.php';
+    $db = new PDO('mysql:host=localhost', 'root', '56658378');
     try {
         //Create the camagru database
     $sql = "CREATE DATABASE IF NOT EXISTS camagru";
     $db->exec($sql);
-    $sql = "use camagru";
-    $db->exec($sql);
+   $sql = "use camagru";
+   $db->exec($sql);
     //create the users table
     $sql = "CREATE TABLE IF NOT EXISTS `users` (
         `id` int(11) NOT NULL,

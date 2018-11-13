@@ -1,4 +1,4 @@
-<?php include 'config/database.php'?>
+<?php include 'config/connect.php'; ?>
 <?php include 'views/header.php'?>
 <?php session_start(); ?>
 
@@ -48,7 +48,7 @@
                     echo' <div class="box">
                                     <h4>Uploaded by: <a href="#">'.$r['user'].' </a></h4>
                                     <img src="'.$r['path'].'">
-                                    <button onclick="like()" id="like"><a href="like.php?id='.$r['id'].'">'.$r['likes'].' Like</a></button></form>
+                                    <button id="like"><a href="like.php?id='.$r['id'].'">'.$r['likes'].' Like</a></button></form>
                                     <button><a href="comment.php?id='.$r['id'].'">Comment</a></button>
                                 </div>';
         }

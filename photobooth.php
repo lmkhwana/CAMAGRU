@@ -1,5 +1,5 @@
 <?php
-    include "config/database.php";
+    include 'config/connect.php';
     session_start();
 
     if (isset($_SESSION['id']) && isset($_SESSION['username']))
@@ -73,6 +73,22 @@
                
                 <article id="main-col" style="float: left; width: 55%; margin-top: 10px;">
                     <h1 class="title"> Snap a shot! </h1>
+                    <section id="gallery">
+                    <div class="box" style="display:inline-block;"> 
+                        <label style="display: inline; width: 30%">
+                            <input type="radio" name="filter" value="1">
+                            <img src="img/1.png">
+                        </label>
+                        <label style="display: inline; width: 30%">
+                            <input type="radio" name="filter" value="2">
+                            <img src="img/3.png">
+                        </label>
+                        <label style="display: inline; width: 30%">
+                            <input type="radio" name="filter" value="3">
+                            <img src="img/4.png">
+                        </label>
+                    </div>
+                    </section>
                     <video id="vidDisplay" width="100%" autoplay="true">
                         No Video support for your browser
                     </video>
