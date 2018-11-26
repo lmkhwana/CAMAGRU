@@ -7,17 +7,20 @@
         
         $target_dir = "files/";
         $target_file = $target_dir . basename($_FILES["image"]["name"]);
+        
 
-        // if (isset($_POST['save']))
-        // {
-        //     $img = $_POST['data'];
-        //     $img = str_replace('data:image/png;base64,', '', $img);
-        //     // $data = base64_decode($img);  
-        //     // $file = $target_dir . uniqid() . '.png';
-        //     // $success = file_put_contents($file, $data);
-        //     // print $success ? $file : 'Unable to save the file.';  
-        //     echo $img;
-        // }
+        if (isset($_POST['save']))
+        {
+            if (isset($_POST['filter']))
+            echo $_POST['filter'];
+            // $img = $_POST['data'];
+            // $img = str_replace('data:image/png;base64,', '', $img);
+            // $data = base64_decode($img);  
+            // $file = $target_dir . uniqid() . '.png';
+            // $success = file_put_contents($file, $data);
+            // print $success ? $file : 'Unable to save the file.';  
+        
+        }
 
         if (isset($_POST['submit']))
         {
@@ -73,21 +76,27 @@
                
                 <article id="main-col" style="float: left; width: 55%; margin-top: 10px;">
                     <h1 class="title"> Snap a shot! </h1>
-                    <section id="gallery">
-                    <div class="box" style="display:inline-block;"> 
-                        <label style="display: inline; width: 30%">
+                    <form action="photobooth.php" method="post" enctype="multipart/form-data">
+                        File:
+                        <div class="box" style="display:inline-block;"> 
+                        <label>
                             <input type="radio" name="filter" value="1">
                             <img src="img/1.png">
                         </label>
-                        <label style="display: inline; width: 30%">
+                        <label>
                             <input type="radio" name="filter" value="2">
                             <img src="img/3.png">
                         </label>
-                        <label style="display: inline; width: 30%">
+                        <label>
                             <input type="radio" name="filter" value="3">
                             <img src="img/4.png">
                         </label>
                     </div>
+                        <input type="file" name="image">
+                        <input type="submit" name="submit" class="registerbtn" style="margin-top: 10px;">
+                    </form>
+                    <section id="gallery">
+                    
                     </section>
                     <video id="vidDisplay" width="100%" autoplay="true">
                         No Video support for your browser
@@ -97,11 +106,7 @@
                     <h3 style="text-align: center;"> Or Upload </h3>
                     <hr>
                     <h3 style="text-align: center; color:red;"> <?php  if(isset($msg)) echo $msg; ?></h3>
-                    <form action="photobooth.php" method="post" enctype="multipart/form-data">
-                        File:
-                        <input type="file" name="image">
-                        <input type="submit" name="submit" class="registerbtn" style="margin-top: 10px;">
-                    </form>
+                    
 
                 </article>
                     <aside id="sidebar" style=" height:auto; float: right; width: 40%; margin-top: 10px;">
@@ -134,6 +139,16 @@
                         //print_r($row);
                          echo' <div class="box">
                                 <img src="'.$r['path'].'"/>
+                                <a
+                                    href="http://www.facebook.com/sharer.php?u=http://localhost:8080/camagru/"'.$r['path'].'"
+                                    target="_blank"
+                                    title="Click to share"><img height="auto" src="img/facebook.png">
+                                </a>
+                                <a
+                                    href="http://twitter.com/share?text=Camagru%20Picture&url=http://localhost:8080/camagru/"'.$r['path'].'"
+                                    target="_blank"
+                                    title="Click to post to Twitter"><img height="auto" src="img/tweet.png">
+                                </a>
                                 <a href="delete.php?id='.$r['id'].'">Delete</a>
                                 </div>';
    

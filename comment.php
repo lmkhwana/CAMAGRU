@@ -2,33 +2,54 @@
     include 'config/connect.php';
     session_start();
 
-    $sql = "SELECT * FROM gallery WHERE id = :id";
-    $st = $db->prepare($sql);
-    $st->execute(array('id' => $_GET['id']));
-    $row = $st->fetch();
+    if (!isset($_GET['id']))
+        header('Location: index.php?msg=selectimage');
 
     if (isset($_SESSION['id']) && isset($_SESSION['username']))
     {
+        try{
+            $sql = "SELECT * FROM gallery WHERE id = :id";
+            $st = $db->prepare($sql);
+             $st->execute(array('id' => $_GET['id']));
+             $row = $st->fetch();
+             $username = $row['user'];
+        }
+        catch(PDOException $e)
+        {
+                echo $e.getMessage();
+        }
+
+        try {
+            $stmt = $db->prepare("SELECT * FROM users WHERE username=?");
+            $stmt->execute([$username]);
+            $user = $stmt->fetch();
+            echo $user['preference'];
+
+        }
+        catch(PDOException $e)
+        {
+            echo $e.getMessage();
+        }  
+        
+
         if(isset($_POST['submit']))
         {
+
             $comment = $_POST['comment'];
+
+            try{
+                $query = "INSERT INTO comments (post_id, comment, user) VALUES(?, ?, ?)";
+                $stmt = $db->prepare($query);
+                $stmt->execute([$_GET['id'],  $comment,  $_SESSION['username']]);
+                header('Location: comment.php?id='.$_GET['id']);
+
+            }
+            catch(PDOException $e)
+            {
+                echo $e.getMessage();
+            }
             
-            $query = "INSERT INTO comments (post_id, comment, user) VALUES(:id, :comment, :user)";
-            $stmt = $db->prepare($query);
-            $stmt->execute(array(':id' => $_GET['id'], ':comment' => $comment, ':user' => $_SESSION['username']));
-
-
-            $sq = "SELECT * FROM users WHERE username = :user";
-            $s = $db->prepare($sq);
-            $s->execute(array(':user' => $row['user']));
-            $r = $s->fetch();
-
-            $query = "SELECT * FROM users WHERE username = :username";
-            $statement = $db->prepare($query);
-            $statement->execute(array('username' => $row['user']));
-            $r = $statement->fetch();
-
-            if ($r['preference'] == 1)
+            if ($user['preference'] === 1)
             {
                 $Name = "Camagru comment"; //senders name
                 $my_email = "no-reply@camagru.com"; //senders email
@@ -38,10 +59,21 @@
                 $body = "Hello , You have a new comment from ". $_SESSION['username']." : ". $comment. " view it here http://http://127.0.0.1:8080/camagru/comment.php?id=".$_GET['id'];
                             
 
-                $result = mail($recipient, $subject, $body, $header);
+                if ($result = mail($recipient, $subject, $body, $header))
+                    echo "something";
+                
             }
+            else
+                {
+                    header('Location: comment.php?id='.$_GET['id']);
+                    echo "email not sent";
+
+                }
+
+
             
         }
+
     }
     else
     {

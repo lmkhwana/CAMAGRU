@@ -7,55 +7,80 @@
             <h1>Profile</h1>
      </div>
 </section>
+<?php 
+
+// $query = "SELECT * FROM users WHERE username =?";
+// $stmt = $db->prepare($query);
+// $stmt->execute([$_SESSION['username']]);
+
+// if ($row = $stmt->fetch())
+// {
+//     $username = $row['username'];
+//     $email = $row['email'];
+// }
+
+
+?>
 
 <?php
 
+
+ 
         if(isset($_POST['submit']))
         {
-            if (!empty($_POST['username']) && !empty($_POST['email']) && !empty($_POST['psw']) && !empty($_POST['psw-repeat']))
+
+            if (!empty($_POST['username']) && !empty($_POST['email']))
             {
-                 if ($_POST['psw'] === $_POST['psw-repeat'])
-                {
+
+
                     //set variables
-                     $username = $_POST['username'];
-                     $email = $_POST['email'];
-                     $password = hash("whirlpool", $_POST['psw']);
+                     $usernamee = $_POST['username'];
+                     $emaill = $_POST['email'];
                      $id = $_SESSION['id'];
+                     $selected = $_POST['preference'];
+                            if ($selected == "yes")
+                                $option = 1;
+                            else
+                                $option = 0;
 
                     //Update query
+                    try{
+                        $stmt = $db->prepare("UPDATE users SET username=?,email=?,preference=? WHERE id=?");
+                        $stmt->execute([$usernamee, $emaill, $option, $id]);
+                        header('Location: profile.php');
 
-                    $query = "UPDATE `users` SET `username`=?,`email`=?,`password`=? WHERE `id`=?";
-                    $stmt = $db->prepare($query);
-                    $stmt->execute([$username, $email, $password, $id]);
+                    }
+                    catch(PDOException $e)
+                    {
+                        echo $e.getMessage();
+                    }
                     
-                   header('Location: profile.php?updated=updated');
-
                    
-                }
+        
             }
         }
+
+        $query = "SELECT * FROM users WHERE username =?";
+$stmt = $db->prepare($query);
+$stmt->execute([$_SESSION['username']]);
+
+if ($row = $stmt->fetch())
+{
+    $username = $row['username'];
+    $email = $row['email'];
+}
+
         
 
 ?>
 
-<?php
-                
 
-                $query = "SELECT * FROM users WHERE username = :username";
-                $stmt = $db->prepare($query);
-                $stmt->execute(array(':username' => $_SESSION['username']));
-
-                if ($row = $stmt->fetchAll(PDO::FETCH_ASSOC))
-                {
-                    $username = $row[0]['username'];
-                    $email = $row[0]['email'];
-                }
-?>
 
 <form action="" method="post">
         <div class="container">
         <p>You can update your information.</p>
         <hr>
+
         <?php if(isset($msg)) echo $msg."<br>"; ?>
 
         <label for="Username"><b>Username</b>: <?php echo $username; ?></label>
@@ -66,8 +91,8 @@
 
         <label for="preference"><b>Update notification preference</b></label> <br \>
         <p>Would you like to recieve Notifications when users comment on your pictures?</p>
-        <input type="radio"  name="preference" value="Yes" required checked>Yes <br>
-        <input type="radio"  name="preference" value="No" required>No<br>
+        <input type="radio"  name="preference" value="yes" required checked>Yes <br>
+        <input type="radio"  name="preference" value="no" required>No<br>
         <hr>
         <div class="container signin">
             <p>Or <a href="forgot.php">Change password</a>.</p>
